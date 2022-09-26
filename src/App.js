@@ -1,24 +1,59 @@
-import logo from './logo.svg';
+
 import './App.css';
+import Navbar from './components/Navbar';
+import Alert from './components/Alert';
+import TextBox from './components/TextBox';
+import React, { useState } from 'react';
+import About from './components/About';
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes
+} from "react-router-dom";
+
 
 function App() {
+
+  const [mode, setmode] = useState('light');
+  const [alert, setalert] = useState(null);
+
+  const showAlert = (message, type) => {
+    setalert({
+      msg: message,
+      type: type
+    });
+    setTimeout(() => {
+      setalert(null);
+    }, 2000);
+  }
+
+  const toggleMode = () => {
+    if (mode === 'light') {
+      setmode('dark');
+      document.body.style.backgroundColor = 'black';
+      showAlert("Darkmode has been Enabled", "success");
+    }
+    else {
+      setmode('light');
+      document.body.style.backgroundColor = 'white'
+      showAlert("Darkmode has been Disabled", "success");
+    }
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+    <Router>
+      <Navbar title='TextUtils' head1='Home' head2='About' mode={mode} toggleMode={toggleMode} />
+      <Alert alert={alert} />
+
+      <div className="container my-3">
+        <Routes>
+          <Route exact path='/' element={<TextBox heading="Enter the text here to convert" mode={mode} showAlert={showAlert} />}/>
+          <Route exact path='/About' element={<About mode={mode} showAlert={showAlert} />} />
+        </Routes>
+      </div>
+    </Router>
+    </>
   );
 }
 
