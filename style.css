@@ -1,0 +1,10 @@
+@media screen and (max-width:480px) and (min-width:320px){
+    .btn-primary-container{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .btn-primary{
+        margin: 3px;
+    }
+}
